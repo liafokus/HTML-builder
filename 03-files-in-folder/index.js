@@ -3,17 +3,15 @@ const fs = require('fs');
 const folderPath = path.join(__dirname, 'secret-folder');
 
 fs.readdir(folderPath, function (err, items) {
-  
-  items.forEach(file => {
-    console.log(path.parse(file).name + ' - ' + path.extname(file) + ' - ' );
-  });
-});
-// fs.readdir(folderPath);
+  for (let i = 0; i < items.length; i++) {
+    let file = folderPath + '/' + items[i];
 
-// const isFile = fileName => {
-//   return fs.lstat(fileName).isFile();
-// };
-// fs.readdir(folderPath).map(fileName => {
-//   return path.join(folderPath, fileName).filter(isFile);
-// });
+    fs.lstat(file, (err, stats) => {
+      if(err) throw err; 
+      else if (stats.isFile()){
+        console.log(path.parse(file).name + ' - ' + path.extname(file) + ' - ' + stats['size'] + 'B');
+      }
+    });
+  }
+});
 
